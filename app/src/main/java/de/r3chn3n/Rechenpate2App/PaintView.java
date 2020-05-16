@@ -18,6 +18,7 @@ import lombok.Setter;
 public class PaintView extends View {
 
     private final int OFFSET = 30;
+    private float length;
     private float msNewPositionX = 30;
     private float msNewPositionY = 30;
     private float msOnTouchX;
@@ -27,6 +28,7 @@ public class PaintView extends View {
     int indexMySquares = 0;
     boolean changed = false;
     private List<MySquare> mySquares = new ArrayList<>();
+    private boolean createElement;
 
 
     public PaintView(Context context, AttributeSet attrs) {
@@ -43,13 +45,18 @@ public class PaintView extends View {
             case MotionEvent.ACTION_DOWN:
                 if (isSquareNotPresent(event)) {
                     addNewSquare(event);
+                    createElement = true;
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 if (squareOutOfScreen()) {
                     deleteSquare();
                 } else {
-                    changeColor(event);
+                    if (createElement) {
+                        createElement = false;
+                    } else {
+                        changeColor(event);
+                    }
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -69,9 +76,9 @@ public class PaintView extends View {
      * (mySquareX, mySquareY) and length LENGTH
      */
     private boolean isEventInSquare(MySquare mySquare, MotionEvent event) {
-        return event.getX() <= mySquare.getX() + mySquare.getSquareWidth()  + OFFSET / 2. && event.getX() >= mySquare.getX()
-                - MySquare.LENGTH -  OFFSET / 2. && event.getY() <= mySquare.getY()  + mySquare.getSquareHeight() + OFFSET / 2. &&
-                event.getY() >= mySquare.getY() + mySquare.getSquareHeight()-  OFFSET / 2.;
+        return event.getX() <= mySquare.getX() + 2 * mySquare.getSquareWidth()  + OFFSET / 2. && event.getX() >= mySquare.getX()
+                -  OFFSET / 2. && event.getY() <= mySquare.getY()  + 2 * mySquare.getSquareHeight() + OFFSET / 2. &&
+                event.getY() >= mySquare.getY() -  OFFSET / 2.;
     }
 
     /**
@@ -129,9 +136,9 @@ public class PaintView extends View {
     private void changeColor(MotionEvent event) {
         msNewPositionX = msOnTouchX + event.getX() - moveX;
         msNewPositionY = msOnTouchY + event.getY() - moveY;
-        if (msNewPositionX <= msOnTouchX +  MySquare.LENGTH * 2/3 && msNewPositionX >= msOnTouchX -  MySquare.LENGTH * 2/3
-                && msNewPositionY <= msOnTouchY +  MySquare.LENGTH * 2/3 && msNewPositionY >= msOnTouchY -  MySquare.LENGTH * 2/3) {
-                mySquares.get(indexMySquares).setColor();
+        if (msNewPositionX <= msOnTouchX +  2 * mySquares.get(indexMySquares).getSquareWidth() * 2/3  && msNewPositionX >= msOnTouchX -  MySquare.LENGTH
+                && msNewPositionY <= msOnTouchY + 2 * mySquares.get(indexMySquares).getSquareHeight() * 2/3  && msNewPositionY >= msOnTouchY -    MySquare.LENGTH ) {
+            mySquares.get(indexMySquares).setColor();
         }
     }
 
@@ -151,7 +158,7 @@ public class PaintView extends View {
      * @return true if x value or y value are below offset or greater than width/ height
      */
     private boolean squareOutOfScreen() {
-        return msNewPositionX <= OFFSET || msNewPositionX >= getWidth() - OFFSET
+        return msNewPositionX >= getWidth() - OFFSET
                 || msNewPositionY <= OFFSET || msNewPositionY >= getHeight() - OFFSET;
     }
 
@@ -184,16 +191,28 @@ public class PaintView extends View {
                         mySquare.getMyPaintBorder());
                     break;
                 case Tens:
-                case Hundreds:
                     for (int i = 0; i < 10; i++) {
-                        canvas.drawRect(mySquare.getX() - mySquare.LENGTH_BORDER, mySquare.getY() - mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER + (i - 1) * 5 + 10,
-                                mySquare.getX() + mySquare.LENGTH_BORDER, mySquare.getY() + mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER  + (i - 1) * 5 + 10,
+                        canvas.drawRect(mySquare.getX() - mySquare.LENGTH_BORDER, mySquare.getY() - mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER + (i - 1) * 3 + 6,
+                                mySquare.getX() + mySquare.LENGTH_BORDER, mySquare.getY() + mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER  + (i - 1) * 3 + 6,
                                 mySquare.getMyPaint());
-                        canvas.drawRect(mySquare.getX() - mySquare.LENGTH, mySquare.getY() + (2 * i - 1) * mySquare.LENGTH_BORDER  + (i - 1) * 5 + 10,
-                                mySquare.getX() + mySquare.LENGTH, mySquare.getY() + (2 * i ) *  mySquare.LENGTH_BORDER + mySquare.LENGTH  + (i - 1) * 5 + 10,
+                        canvas.drawRect(mySquare.getX() - mySquare.LENGTH, mySquare.getY() + (2 * i - 1) * mySquare.LENGTH_BORDER  + (i - 1) * 3 + 6,
+                                mySquare.getX() + mySquare.LENGTH, mySquare.getY() + (2 * i ) *  mySquare.LENGTH_BORDER + mySquare.LENGTH  + (i - 1) * 3 + 6,
                                 mySquare.getMyPaintBorder());
                     }
                     break;
+                case Hundreds:
+                    for (int i = 0; i < 10; i++) {
+                        for (int j = 0; j < 10; j++) {
+                            canvas.drawRect(mySquare.getX() - mySquare.LENGTH_BORDER + (2 * j) * mySquare.LENGTH_BORDER + (j - 1) * 3 + 6, mySquare.getY() - mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER + (i - 1) * 3 + 6,
+                                    mySquare.getX() + mySquare.LENGTH_BORDER + (2 * j) * mySquare.LENGTH_BORDER + (j - 1) * 3 + 6, mySquare.getY() + mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER + (i - 1) * 3 + 6,
+                                    mySquare.getMyPaint());
+                            canvas.drawRect(mySquare.getX() - mySquare.LENGTH + (2 * j) * mySquare.LENGTH_BORDER + (j - 1) * 3 + 6, mySquare.getY() + (2 * i - 1) * mySquare.LENGTH_BORDER + (i - 1) * 3 + 6,
+                                    mySquare.getX() + mySquare.LENGTH + (2 * j) * mySquare.LENGTH_BORDER + (j - 1) * 3 + 6, mySquare.getY() + (2 * i) * mySquare.LENGTH_BORDER + mySquare.LENGTH + (i - 1) * 3 + 6,
+                                    mySquare.getMyPaintBorder());
+                        }
+                    }
+                    break;
+
             }
 
         }

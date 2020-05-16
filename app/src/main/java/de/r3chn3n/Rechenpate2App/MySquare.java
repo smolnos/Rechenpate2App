@@ -11,10 +11,10 @@ import lombok.Setter;
 public class MySquare {
     public static final float LENGTH = 20;
     public static final float LENGTH_BORDER = 20;
-    public static final int BLUE = Color.parseColor("#000ffa");
-    public static final int BLUE_BORDER = Color.parseColor("#4287f5");
-    public static final int RED = Color.parseColor("#ff0042");
-    public static final int RED_BORDER = Color.parseColor("#ff9bb5");
+    public static final int BLUE_BORDER = Color.parseColor("#000ffa");
+    public static final int BLUE = Color.parseColor("#4287f5");
+    public static final int RED_BORDER = Color.parseColor("#ff0042");
+    public static final int RED = Color.parseColor("#ff9bb5");
 
     private float x;
     private float y;
@@ -27,15 +27,14 @@ public class MySquare {
 
     MySquare() {
         myPaint = new Paint();
-        myPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        myPaint.setStrokeWidth(10F);
-        myPaint.setColor(Color.parseColor("#000ffa"));
-        myPaint.setAlpha(250);
+        myPaint.setStyle(Paint.Style.FILL);
+        myPaint.setColor(BLUE);
+        myPaint.setAlpha(75);
         myPaint.setAntiAlias(true);
         myPaintBorder = new Paint();
-        myPaintBorder.setStyle(Paint.Style.FILL);
-        myPaintBorder.setColor(Color.parseColor("#4287f5"));
-        myPaintBorder.setAlpha(250);
+        myPaintBorder.setStyle(Paint.Style.STROKE);
+        myPaintBorder.setStrokeWidth(6F);
+        myPaintBorder.setColor(BLUE_BORDER);
         myPaintBorder.setAntiAlias(true);
         element = Element.Ones;
         squareWidth = LENGTH;
@@ -43,11 +42,13 @@ public class MySquare {
     }
 
     void setColor() {
-        if (this.myPaint.getColor() == BLUE) {
+        if (this.myPaintBorder.getColor() == BLUE_BORDER) {
             this.myPaint.setColor(RED);
+            this.myPaint.setAlpha(75);
             this.myPaintBorder.setColor(RED_BORDER);
         } else {
             this.myPaint.setColor(BLUE);
+            this.myPaint.setAlpha(75);
             this.myPaintBorder.setColor(BLUE_BORDER);
         }
     }
