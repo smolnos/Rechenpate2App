@@ -7,7 +7,10 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -76,9 +79,10 @@ public class PaintView extends View {
      * (mySquareX, mySquareY) and length LENGTH
      */
     private boolean isEventInSquare(MySquare mySquare, MotionEvent event) {
-        return event.getX() <= mySquare.getX() + 2 * mySquare.getSquareWidth()  + OFFSET / 2. && event.getX() >= mySquare.getX()
-                -  OFFSET / 2. && event.getY() <= mySquare.getY()  + 2 * mySquare.getSquareHeight() + OFFSET / 2. &&
-                event.getY() >= mySquare.getY() -  OFFSET / 2.;
+        return event.getX() <= mySquare.getX() + mySquare.getSquareWidth() &&
+                event.getX() >= mySquare.getX() &&
+                event.getY() <= mySquare.getY() + mySquare.getSquareHeight() &&
+                event.getY() >= mySquare.getY();
     }
 
     /**
@@ -120,12 +124,24 @@ public class PaintView extends View {
         } else {
             newSquare.setElementByHeight(getHeight());
         }
+        newSquare.setSelectedIndex(true);
         mySquares.add(newSquare);
         msOnTouchX = moveX;
         msOnTouchY = moveY;
-        indexMySquares = mySquares.size() - 1;
         msNewPositionX = msOnTouchX + event.getX() - moveX;
         msNewPositionY = msOnTouchY + event.getY() - moveY;
+        Collections.sort(mySquares);
+        setNewIndexMySquares();
+        mySquares.get(indexMySquares).setSelectedIndex(false);
+    }
+
+    private void setNewIndexMySquares() {
+        for (int i = 0; i < mySquares.size(); i++) {
+            if (mySquares.get(i).isSelectedIndex()) {
+                indexMySquares = i;
+                break;
+            }
+        }
     }
 
     /**
@@ -136,8 +152,10 @@ public class PaintView extends View {
     private void changeColor(MotionEvent event) {
         msNewPositionX = msOnTouchX + event.getX() - moveX;
         msNewPositionY = msOnTouchY + event.getY() - moveY;
-        if (msNewPositionX <= msOnTouchX +  2 * mySquares.get(indexMySquares).getSquareWidth() * 2/3  && msNewPositionX >= msOnTouchX -  MySquare.LENGTH
-                && msNewPositionY <= msOnTouchY + 2 * mySquares.get(indexMySquares).getSquareHeight() * 2/3  && msNewPositionY >= msOnTouchY -    MySquare.LENGTH ) {
+        if (msNewPositionX <= msOnTouchX + mySquares.get(indexMySquares).getSquareWidth() * 2/3  &&
+            msNewPositionX >= msOnTouchX - MySquare.LENGTH &&
+            msNewPositionY <= msOnTouchY + mySquares.get(indexMySquares).getSquareHeight() * 2/3  &&
+            msNewPositionY >= msOnTouchY - MySquare.LENGTH ) {
             mySquares.get(indexMySquares).setColor();
         }
     }
@@ -158,7 +176,7 @@ public class PaintView extends View {
      * @return true if x value or y value are below offset or greater than width/ height
      */
     private boolean squareOutOfScreen() {
-        return msNewPositionX >= getWidth() - OFFSET
+        return msNewPositionX <= 0 || msNewPositionX >= getWidth() - OFFSET
                 || msNewPositionY <= OFFSET || msNewPositionY >= getHeight() - OFFSET;
     }
 
@@ -212,9 +230,7 @@ public class PaintView extends View {
                         }
                     }
                     break;
-
             }
-
         }
         invalidate();
     }

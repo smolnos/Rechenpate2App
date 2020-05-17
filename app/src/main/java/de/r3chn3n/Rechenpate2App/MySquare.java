@@ -8,7 +8,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MySquare {
+public class MySquare implements Comparable<MySquare> {
+
     public static final float LENGTH = 20;
     public static final float LENGTH_BORDER = 20;
     public static final int BLUE_BORDER = Color.parseColor("#000ffa");
@@ -24,6 +25,9 @@ public class MySquare {
     private Element element;
     private float squareWidth;
     private float squareHeight;
+    private float numOfSquaresX = 1;
+    private float numOfSquaresY = 1;
+    private boolean selectedIndex = false;
 
     MySquare() {
         myPaint = new Paint();
@@ -55,23 +59,39 @@ public class MySquare {
 
     public void setElementByHeight(float heightDisplay) {
         if (this.y < 0.33 * heightDisplay) {
+            numOfSquaresX = 10;
+            numOfSquaresY = 10;
             this.setElement(Element.Hundreds);
-            this.setSquareHeight(LENGTH * 10);
-            this.setSquareWidth(LENGTH * 10);
+            this.setSquareHeight(2 * LENGTH * numOfSquaresY);
+            this.setSquareWidth(2 * LENGTH * numOfSquaresX);
         } else if (this.y < 0.66 * heightDisplay){
+            numOfSquaresX = 1;
+            numOfSquaresY = 10;
             this.setElement(Element.Tens);
-            this.setSquareHeight(LENGTH * 10);
+            this.setSquareHeight(2 * LENGTH * numOfSquaresY);
         }
     }
 
     public void setElementByWidth(float widthDisplay) {
         if (this.x < 0.33 * widthDisplay) {
+            numOfSquaresX = 10;
+            numOfSquaresY = 10;
             this.setElement(Element.Hundreds);
-            this.setSquareHeight(LENGTH * 10);
-            this.setSquareWidth(LENGTH * 10);
+            this.setSquareHeight(2 * LENGTH * numOfSquaresY);
+            this.setSquareWidth(2 * LENGTH * numOfSquaresX);
         } else if (this.x < 0.66 * widthDisplay){
             this.setElement(Element.Tens);
-            this.setSquareHeight(LENGTH * 10);
+            numOfSquaresX = 1;
+            numOfSquaresY = 10;
+            this.setSquareHeight(2 * LENGTH * numOfSquaresY);
         }
+    }
+
+    @Override
+    public int compareTo(MySquare ms) {
+        if (element == null || ms.element == null) {
+            return 0;
+        }
+        return element.compareTo(ms.element);
     }
 }
