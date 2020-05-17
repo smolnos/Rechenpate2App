@@ -11,9 +11,9 @@ import lombok.Setter;
 @Setter
 public abstract class MySquare implements Comparable<MySquare> {
 
-    public final int OFFSET = 20;
-    public static final float LENGTH = 20;
-    public static final float LENGTH_BORDER = 20;
+    public final int OFFSET = 30;
+    public static final float LENGTH = 30;
+    public static final float LENGTH_BORDER = 30;
     public static final float STROKE_WIDTH = 6F;
     public static final int BLUE_BORDER = Color.parseColor("#000ffa");
     public static final int BLUE = Color.parseColor("#4287f5");
@@ -43,32 +43,16 @@ public abstract class MySquare implements Comparable<MySquare> {
         this.myPaint = new Paint();
         this.myPaint.setStyle(Paint.Style.FILL);
         this.myPaint.setColor(BLUE);
-        this.myPaint.setAlpha(75);
         this.myPaint.setAntiAlias(true);
         this.myPaintBorder = new Paint();
         this.myPaintBorder.setStyle(Paint.Style.STROKE);
         this.myPaintBorder.setStrokeWidth(STROKE_WIDTH);
         this.myPaintBorder.setColor(BLUE_BORDER);
         this.myPaintBorder.setAntiAlias(true);
-//        this.setSelectedIndex(true);
         this.setCreateElement(true);
     }
 
-    public void setColor() {
-        if (createElement) {
-            setCreateElement(false);
-        } else {
-            if (this.myPaintBorder.getColor() == BLUE_BORDER) {
-                this.myPaint.setColor(RED);
-                this.myPaint.setAlpha(75);
-                this.myPaintBorder.setColor(RED_BORDER);
-            } else {
-                this.myPaint.setColor(BLUE);
-                this.myPaint.setAlpha(75);
-                this.myPaintBorder.setColor(BLUE_BORDER);
-            }
-        }
-    }
+    public abstract void setColor();
 
     /**
      * check if current event touched this rectangle

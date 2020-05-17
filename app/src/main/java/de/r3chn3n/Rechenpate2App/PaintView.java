@@ -95,7 +95,17 @@ public class PaintView extends View {
         float val = getWidth() > getHeight() ? event.getX() : event.getY();
         MySquare newSquare = mySquareStore.orderMySquare(maxLength, val, event.getX(), event.getY());
         mySquares.add(newSquare);
-        indexMySquares = mySquares.size() -1;
+        indexMySquares = mySquares.size() - 1;
+    }
+
+
+    /**
+     * delete circles if center is outside the screen
+     */
+    private void deleteSquare() {
+        if (mySquares.isEmpty()) return;
+        mySquares.remove(indexMySquares);
+        indexMySquares = mySquares.size() - 1;
     }
 
     private void setNewIndexMySquares() {
@@ -105,14 +115,6 @@ public class PaintView extends View {
                 break;
             }
         }
-    }
-
-    /**
-     * delete circles if center is outside the screen
-     */
-    private void deleteSquare() {
-        if (mySquares.isEmpty()) return;
-        mySquares.remove(indexMySquares);
     }
 
     /**
