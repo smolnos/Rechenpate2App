@@ -80,9 +80,9 @@ public abstract class MySquare implements Comparable<MySquare> {
      * should be changed and not the position
      */
     public boolean shouldColorBeChanged(MotionEvent event, float oldEventX, float oldEventY) {
-        return event.getX() - oldEventX <= getSquareWidth() &&
+        return event.getX() - oldEventX <= LENGTH &&
                 event.getX() - oldEventX >= -LENGTH &&
-                event.getY() - oldEventY <= getSquareHeight() &&
+                event.getY() - oldEventY <= LENGTH &&
                 event.getY() - oldEventY >= -LENGTH;
     }
 
