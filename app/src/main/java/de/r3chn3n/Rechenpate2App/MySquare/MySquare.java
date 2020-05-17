@@ -35,7 +35,7 @@ public abstract class MySquare implements Comparable<MySquare> {
     protected boolean selectedIndex = false;
     protected boolean createElement = false;
 
-    public MySquare(float x, float y) {
+    MySquare(float x, float y) {
         this.x = x;
         this.y = y;
         this.xFirstTouch = x;
@@ -79,16 +79,6 @@ public abstract class MySquare implements Comparable<MySquare> {
     public abstract boolean isEventInSquare(MotionEvent event);
 
     /**
-     * change color of this rectangle if the event just touched this rectangle and does not move in
-     * another direction
-     *
-     * @param event parameter of the new event needed to compute new position of this rectangle
-     * @return true if event with point (eventX, eventY) is still within rectangle and thus only color
-     * should be changed and not the position
-     */
-    public abstract boolean shouldColorBeChanged(MotionEvent event, float oldEventX, float oldEventY);
-
-    /**
      * check if the given point is out of the canvas
      *
      * @param displayWidth width of the current display
@@ -96,6 +86,21 @@ public abstract class MySquare implements Comparable<MySquare> {
      * @return true if x value or y value are below offset or greater than width/ height
      */
     public abstract boolean outOfScreen(float displayWidth, float displayHeight);
+
+    /**
+     * change color of this rectangle if the event just touched this rectangle and does not move in
+     * another direction
+     *
+     * @param event parameter of the new event needed to compute new position of this rectangle
+     * @return true if event with point (eventX, eventY) is still within rectangle and thus only color
+     * should be changed and not the position
+     */
+    public boolean shouldColorBeChanged(MotionEvent event, float oldEventX, float oldEventY) {
+        return event.getX() - oldEventX <= getSquareWidth() &&
+                event.getX() - oldEventX >= -LENGTH &&
+                event.getY() - oldEventY <= getSquareHeight() &&
+                event.getY() - oldEventY >= -LENGTH;
+    }
 
     /**
      * set new position due to the new event to this circle

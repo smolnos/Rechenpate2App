@@ -4,7 +4,7 @@ import android.view.MotionEvent;
 
 public class My100Square extends MySquare {
 
-    public My100Square(float x, float y) {
+    My100Square(float x, float y) {
         super(x, y);
         this.setNumOfSquaresX(10);
         this.setNumOfSquaresY(10);
@@ -22,18 +22,10 @@ public class My100Square extends MySquare {
     }
 
     @Override
-    public boolean shouldColorBeChanged(MotionEvent event, float oldEventX, float oldEventY) {
-        return  event.getX() - oldEventX <= getSquareWidth() + LENGTH * 2 * (numOfSquaresX / 2) &&
-                event.getX() - oldEventX >= -LENGTH - LENGTH * 2 * (numOfSquaresX / 2) &&
-                event.getY() - oldEventY <= getSquareHeight() + LENGTH * 2 * (numOfSquaresY / 2) &&
-                event.getY() - oldEventY >= -LENGTH - LENGTH * 2 * (numOfSquaresY / 2);
-    }
-
-    @Override
     public boolean outOfScreen(float displayWidth, float displayHeight) {
-        return getX() + LENGTH * 2 * (numOfSquaresX / 2)  <= 0 ||
-                getX() - LENGTH - LENGTH * 2 * (numOfSquaresX / 2) >= displayWidth - OFFSET ||
-                getY() + LENGTH * 2 * (numOfSquaresY / 2)  <= OFFSET ||
-                getY() - LENGTH - LENGTH * 2 * (numOfSquaresY / 2)  >= displayHeight - OFFSET;
+        return getX() + LENGTH * (numOfSquaresX - 4)  <= 0 ||
+                getX() - LENGTH - LENGTH * (numOfSquaresX - 1) >= displayWidth - OFFSET ||
+                getY() + LENGTH * (numOfSquaresY - 4)  <= OFFSET ||
+                getY() - LENGTH - LENGTH * (numOfSquaresY - 4)  >= displayHeight - OFFSET;
     }
 }

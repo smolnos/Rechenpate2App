@@ -5,7 +5,7 @@ import android.view.MotionEvent;
 public class My1Square extends MySquare {
 
 
-    public My1Square(float x, float y) {
+    My1Square(float x, float y) {
         super(x, y);
         this.setNumOfSquaresX(1);
         this.setNumOfSquaresY(1);
@@ -19,14 +19,6 @@ public class My1Square extends MySquare {
                 event.getX() >= this.x - LENGTH &&
                 event.getY() <= this.y + LENGTH  &&
                 event.getY() >= this.y - LENGTH;
-    }
-
-    @Override
-    public boolean shouldColorBeChanged(MotionEvent event, float oldEventX, float oldEventY) {
-        return  event.getX() - oldEventX <= getSquareWidth() &&
-                event.getX() - oldEventX >= -LENGTH &&
-                event.getY() - oldEventY <= getSquareHeight() &&
-                event.getY() - oldEventY >= -LENGTH;
     }
 
     @Override

@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
+import java.util.Objects;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -163,13 +164,14 @@ public class MainActivity extends AppCompatActivity {
      * @param resultCode = RESULT_OK TODO was bedeutet das?
      * @param data the information of the picture
      */
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             Bitmap photo;
             if (requestCode == 1) {
-                photo = (Bitmap) data.getExtras().get("data");
+                photo = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
                 viewImage.setImageBitmap(photo);
                 bDelete.setVisibility(View.VISIBLE);
             } else if (requestCode == 2) {

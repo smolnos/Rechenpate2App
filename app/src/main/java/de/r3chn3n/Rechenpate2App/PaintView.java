@@ -35,6 +35,7 @@ public class PaintView extends View {
         super(context);
     }
 
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
         switch (action) {
