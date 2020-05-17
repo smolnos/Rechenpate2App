@@ -14,8 +14,8 @@ public class My10Square extends MySquare {
 
     @Override
     public boolean isEventInSquare(MotionEvent event) {
-        return  event.getX() <= this.x + LENGTH &&
-                event.getX() >= this.x - LENGTH &&
+        return  event.getX() <= this.x +  2 * LENGTH &&
+                event.getX() >= this.x -  2 * LENGTH &&
                 event.getY() <= this.y + LENGTH + LENGTH * 2 * (numOfSquaresY / 2)  &&
                 event.getY() >= this.y - LENGTH - LENGTH * 2 * (numOfSquaresY / 2);
     }

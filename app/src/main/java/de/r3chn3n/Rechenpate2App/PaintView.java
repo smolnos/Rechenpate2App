@@ -92,11 +92,10 @@ public class PaintView extends View {
      */
     private void addNewSquare(MotionEvent event) {
         float maxLength = getWidth() > getHeight() ? getWidth() : getHeight();
-        MySquare newSquare = mySquareStore.orderMySquare(maxLength, event.getX(), event.getY());
+        float val = getWidth() > getHeight() ? event.getX() : event.getY();
+        MySquare newSquare = mySquareStore.orderMySquare(maxLength, val, event.getX(), event.getY());
         mySquares.add(newSquare);
-        Collections.sort(mySquares);
-        setNewIndexMySquares();
-        mySquares.get(indexMySquares).setSelectedIndex(false);
+        indexMySquares = mySquares.size() -1;
     }
 
     private void setNewIndexMySquares() {
@@ -121,7 +120,12 @@ public class PaintView extends View {
      * @param canvas canvas on which the rectangle are drawn
      */
     public void draw(Canvas canvas) {
-
+        if (!mySquares.isEmpty()) {
+            mySquares.get(indexMySquares).setSelectedIndex(true);
+            Collections.sort(mySquares);
+            setNewIndexMySquares();
+            mySquares.get(indexMySquares).setSelectedIndex(false);
+        }
         super.draw(canvas);
         for (MySquare mySquare : mySquares) {
             switch (mySquare.getElement()) {

@@ -50,7 +50,7 @@ public abstract class MySquare implements Comparable<MySquare> {
         this.myPaintBorder.setStrokeWidth(STROKE_WIDTH);
         this.myPaintBorder.setColor(BLUE_BORDER);
         this.myPaintBorder.setAntiAlias(true);
-        this.setSelectedIndex(true);
+//        this.setSelectedIndex(true);
         this.setCreateElement(true);
     }
 
