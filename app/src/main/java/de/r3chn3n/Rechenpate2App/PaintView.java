@@ -7,11 +7,11 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.IntStream;
 
+import de.r3chn3n.Rechenpate2App.MySquare.MySquare;
+import de.r3chn3n.Rechenpate2App.MySquare.MySquareStore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,19 +20,12 @@ import lombok.Setter;
 @Setter
 public class PaintView extends View {
 
-    private final int OFFSET = 30;
-    private float length;
-    private float msNewPositionX = 30;
-    private float msNewPositionY = 30;
-    private float msOnTouchX;
-    private float msOnTouchY;
-    private float moveX;
-    private float moveY;
+    private float oldEventX;
+    private float oldEventY;
     int indexMySquares = 0;
     boolean changed = false;
     private List<MySquare> mySquares = new ArrayList<>();
-    private boolean createElement;
-
+    private MySquareStore mySquareStore = new MySquareStore();
 
     public PaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -46,43 +39,29 @@ public class PaintView extends View {
         int action = event.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                oldEventX = event.getX();
+                oldEventY = event.getY();
                 if (isSquareNotPresent(event)) {
                     addNewSquare(event);
-                    createElement = true;
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (squareOutOfScreen()) {
+                MySquare mySquare = mySquares.get(indexMySquares);
+                mySquares.get(indexMySquares).setXFirstTouch(mySquares.get(indexMySquares).getX());
+                mySquares.get(indexMySquares).setYFirstTouch(mySquares.get(indexMySquares).getY());
+                if (mySquare.outOfScreen(getWidth(), getHeight())) {
                     deleteSquare();
-                } else {
-                    if (createElement) {
-                        createElement = false;
-                    } else {
-                        changeColor(event);
-                    }
+                } else if (mySquare.shouldColorBeChanged(event, oldEventX, oldEventY)) {
+                    mySquares.get(indexMySquares).setColor();
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                moveSquare(event);
+                mySquares.get(indexMySquares).moveSquare(event, oldEventX, oldEventY);
                 break;
             case MotionEvent.ACTION_CANCEL:
                 break;
         }
         return true;
-    }
-
-    /**
-     * check if current event touched a rectangle
-     * @param mySquare instance of class MySquare taken from list mySquares
-     * @param event instance of class Motionevent
-     * @return true if event with point (eventX, eventY) is within rectangle having center
-     * (mySquareX, mySquareY) and length LENGTH
-     */
-    private boolean isEventInSquare(MySquare mySquare, MotionEvent event) {
-        return event.getX() <= mySquare.getX() + mySquare.getSquareWidth() &&
-                event.getX() >= mySquare.getX() &&
-                event.getY() <= mySquare.getY() + mySquare.getSquareHeight() &&
-                event.getY() >= mySquare.getY();
     }
 
     /**
@@ -92,16 +71,11 @@ public class PaintView extends View {
      * @return boolean true if rectangle is not in list mySquares
      */
     private boolean isSquareNotPresent(MotionEvent event) {
-        moveX = event.getX();
-        moveY = event.getY();
-
         boolean circleNotPresent = true;
         int i = 0;
         for (MySquare ms : mySquares) {
-            if (isEventInSquare(ms, event)) {
+            if (ms.isEventInSquare(event)) {
                 circleNotPresent = false;
-                msOnTouchX = ms.getX();
-                msOnTouchY =  ms.getY();
                 indexMySquares = i; //index of myCircles of that instance myCircle which should be
                 // changed later (position, color, deletion)
                 break;
@@ -116,20 +90,9 @@ public class PaintView extends View {
      * the list myCircles. Set myIdCircle on the position of this new instantiated object
      */
     private void addNewSquare(MotionEvent event) {
-        MySquare newSquare = new MySquare();
-        newSquare.setX(moveX);
-        newSquare.setY(moveY);
-        if (getWidth() > getHeight()) {
-            newSquare.setElementByWidth(getWidth());
-        } else {
-            newSquare.setElementByHeight(getHeight());
-        }
-        newSquare.setSelectedIndex(true);
+        float maxLength = getWidth() > getHeight() ? getWidth() : getHeight();
+        MySquare newSquare = mySquareStore.orderMySquare(maxLength, event.getX(), event.getY());
         mySquares.add(newSquare);
-        msOnTouchX = moveX;
-        msOnTouchY = moveY;
-        msNewPositionX = msOnTouchX + event.getX() - moveX;
-        msNewPositionY = msOnTouchY + event.getY() - moveY;
         Collections.sort(mySquares);
         setNewIndexMySquares();
         mySquares.get(indexMySquares).setSelectedIndex(false);
@@ -145,50 +108,11 @@ public class PaintView extends View {
     }
 
     /**
-     * change color of this circle if the event just touched this circle and does not move in
-     * another direction
-     * @param event parameter of the new event needed to compute new position of this circle
-     */
-    private void changeColor(MotionEvent event) {
-        msNewPositionX = msOnTouchX + event.getX() - moveX;
-        msNewPositionY = msOnTouchY + event.getY() - moveY;
-        if (msNewPositionX <= msOnTouchX + mySquares.get(indexMySquares).getSquareWidth() * 2/3  &&
-            msNewPositionX >= msOnTouchX - MySquare.LENGTH &&
-            msNewPositionY <= msOnTouchY + mySquares.get(indexMySquares).getSquareHeight() * 2/3  &&
-            msNewPositionY >= msOnTouchY - MySquare.LENGTH ) {
-            mySquares.get(indexMySquares).setColor();
-        }
-    }
-
-    /**
-     * set new position due to the new event to this circle
-     * @param event paramer of the new event needed to compute new position of this circle
-     */
-    private void moveSquare(MotionEvent event) {
-        msNewPositionX = msOnTouchX + event.getX() - moveX;
-        msNewPositionY = msOnTouchY + event.getY() - moveY;
-        mySquares.get(indexMySquares).setX(msNewPositionX);
-        mySquares.get(indexMySquares).setY(msNewPositionY);
-    }
-
-    /**
-     * check if the given point is out of the canvas
-     * @return true if x value or y value are below offset or greater than width/ height
-     */
-    private boolean squareOutOfScreen() {
-        return msNewPositionX <= 0 || msNewPositionX >= getWidth() - OFFSET
-                || msNewPositionY <= OFFSET || msNewPositionY >= getHeight() - OFFSET;
-    }
-
-    /**
      * delete circles if center is outside the screen
      */
     private void deleteSquare() {
         if (mySquares.isEmpty()) return;
         mySquares.remove(indexMySquares);
-        if (mySquares.isEmpty()) return;
-        msNewPositionX = mySquares.get(mySquares.size() - 1).getX();
-        msNewPositionY = mySquares.get(mySquares.size() - 1).getY();
     }
 
     /**
@@ -201,38 +125,68 @@ public class PaintView extends View {
         for (MySquare mySquare : mySquares) {
             switch (mySquare.getElement()) {
                 case Ones:
-                    canvas.drawRect(mySquare.getX() - mySquare.LENGTH_BORDER, mySquare.getY() - mySquare.LENGTH_BORDER,
-                            mySquare.getX() + mySquare.LENGTH_BORDER, mySquare.getY() + mySquare.LENGTH_BORDER,
-                            mySquare.getMyPaint());
-                    canvas.drawRect(mySquare.getX() - mySquare.LENGTH, mySquare.getY() - mySquare.LENGTH,
-                        mySquare.getX() + mySquare.LENGTH, mySquare.getY() + mySquare.LENGTH,
-                        mySquare.getMyPaintBorder());
+                    draw1Square(canvas, mySquare);
                     break;
                 case Tens:
                     for (int i = 0; i < 10; i++) {
-                        canvas.drawRect(mySquare.getX() - mySquare.LENGTH_BORDER, mySquare.getY() - mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER + (i - 1) * 3 + 6,
-                                mySquare.getX() + mySquare.LENGTH_BORDER, mySquare.getY() + mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER  + (i - 1) * 3 + 6,
-                                mySquare.getMyPaint());
-                        canvas.drawRect(mySquare.getX() - mySquare.LENGTH, mySquare.getY() + (2 * i - 1) * mySquare.LENGTH_BORDER  + (i - 1) * 3 + 6,
-                                mySquare.getX() + mySquare.LENGTH, mySquare.getY() + (2 * i ) *  mySquare.LENGTH_BORDER + mySquare.LENGTH  + (i - 1) * 3 + 6,
-                                mySquare.getMyPaintBorder());
+                        draw1SquareOutOf10(canvas, mySquare, i);
                     }
                     break;
                 case Hundreds:
                     for (int i = 0; i < 10; i++) {
                         for (int j = 0; j < 10; j++) {
-                            canvas.drawRect(mySquare.getX() - mySquare.LENGTH_BORDER + (2 * j) * mySquare.LENGTH_BORDER + (j - 1) * 3 + 6, mySquare.getY() - mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER + (i - 1) * 3 + 6,
-                                    mySquare.getX() + mySquare.LENGTH_BORDER + (2 * j) * mySquare.LENGTH_BORDER + (j - 1) * 3 + 6, mySquare.getY() + mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER + (i - 1) * 3 + 6,
-                                    mySquare.getMyPaint());
-                            canvas.drawRect(mySquare.getX() - mySquare.LENGTH + (2 * j) * mySquare.LENGTH_BORDER + (j - 1) * 3 + 6, mySquare.getY() + (2 * i - 1) * mySquare.LENGTH_BORDER + (i - 1) * 3 + 6,
-                                    mySquare.getX() + mySquare.LENGTH + (2 * j) * mySquare.LENGTH_BORDER + (j - 1) * 3 + 6, mySquare.getY() + (2 * i) * mySquare.LENGTH_BORDER + mySquare.LENGTH + (i - 1) * 3 + 6,
-                                    mySquare.getMyPaintBorder());
+                            draw1SquareOutOf100(canvas, mySquare, i, j);
                         }
                     }
                     break;
             }
         }
         invalidate();
+    }
+
+    private void draw1SquareOutOf100(Canvas canvas, MySquare mySquare, int i, int j) {
+        float newYPos =  mySquare.getY() - 2 * MySquare.LENGTH_BORDER * 5;
+        float newXPos =  mySquare.getX() - 2 * MySquare.LENGTH_BORDER * 5;
+        float left = newXPos - MySquare.LENGTH_BORDER + (2 * j) * MySquare.LENGTH_BORDER + (j - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        float top = newYPos - MySquare.LENGTH_BORDER + (2 * i) * MySquare.LENGTH_BORDER + (i - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        float right = newXPos + MySquare.LENGTH_BORDER + (2 * j) * MySquare.LENGTH_BORDER + (j - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        float bottom = newYPos + MySquare.LENGTH_BORDER + (2 * i) * MySquare.LENGTH_BORDER  + (i - 1) *  MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        canvas.drawRect(left, top, right, bottom, mySquare.getMyPaint());
+
+        left = newXPos - MySquare.LENGTH + (2 * j) * MySquare.LENGTH + (j - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        top = newYPos - MySquare.LENGTH + (2 * i) * MySquare.LENGTH + (i - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        right = newXPos + MySquare.LENGTH + (2 * j) * MySquare.LENGTH + (j - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        bottom = newYPos + MySquare.LENGTH + (2 * i) * MySquare.LENGTH  + (i - 1) *  MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        canvas.drawRect(left, top, right, bottom, mySquare.getMyPaintBorder());
+    }
+
+    private void draw1SquareOutOf10(Canvas canvas, MySquare mySquare, int i) {
+        float newYPos =  mySquare.getY() - 2 * MySquare.LENGTH_BORDER * 5;
+        float left = mySquare.getX() - MySquare.LENGTH_BORDER;
+        float top = newYPos - MySquare.LENGTH_BORDER + (2 * i) * MySquare.LENGTH_BORDER + (i - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        float right = mySquare.getX() + MySquare.LENGTH_BORDER;
+        float bottom = newYPos + MySquare.LENGTH_BORDER + (2 * i) * MySquare.LENGTH_BORDER  + (i - 1) *  MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        canvas.drawRect(left, top, right, bottom, mySquare.getMyPaint());
+
+        left = mySquare.getX() - MySquare.LENGTH;
+        top = newYPos - MySquare.LENGTH + (2 * i) * MySquare.LENGTH + (i - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        right = mySquare.getX() + MySquare.LENGTH;
+        bottom = newYPos + MySquare.LENGTH + (2 * i) * MySquare.LENGTH  + (i - 1) *  MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        canvas.drawRect(left, top, right, bottom, mySquare.getMyPaintBorder());
+    }
+
+    private void draw1Square(Canvas canvas, MySquare mySquare) {
+        float left = mySquare.getX() - MySquare.LENGTH_BORDER;
+        float top = mySquare.getY() - MySquare.LENGTH_BORDER;
+        float right = mySquare.getX() + MySquare.LENGTH_BORDER;
+        float bottom = mySquare.getY() + MySquare.LENGTH_BORDER;
+        canvas.drawRect(left, top, right, bottom, mySquare.getMyPaint());
+
+        left = mySquare.getX() - MySquare.LENGTH;
+        top = mySquare.getY() - MySquare.LENGTH;
+        right = mySquare.getX() + MySquare.LENGTH;
+        bottom = mySquare.getY() + MySquare.LENGTH;
+        canvas.drawRect(left, top, right, bottom, mySquare.getMyPaintBorder());
     }
 
     @Override
