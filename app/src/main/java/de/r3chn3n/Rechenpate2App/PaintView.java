@@ -205,6 +205,12 @@ public class PaintView extends View {
             tmp = mySquare.getX();
             mySquare.setX(mySquare.getY());
             mySquare.setY(tmp);
+            tmp = mySquare.getXFirstTouch();
+            mySquare.setXFirstTouch(mySquare.getYFirstTouch());
+            mySquare.setYFirstTouch(tmp);
+            tmp = mySquare.getSquareHeight();
+            mySquare.setSquareHeight(mySquare.getSquareWidth());
+            mySquare.setSquareWidth(tmp);
         }
     }
 }
