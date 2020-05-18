@@ -1,10 +1,14 @@
 package de.r3chn3n.Rechenpate2App.MySquare;
 
+import android.graphics.Color;
 import android.view.MotionEvent;
 
 public class My1Square extends MySquare {
 
     public final int ALPHA = 90;
+    public static final int BLUE_BORDER = Color.parseColor("#000ffa");
+    public static final int RED_BORDER = Color.parseColor("#ff0057");
+
 
     My1Square(float x, float y) {
         super(x, y);
@@ -13,6 +17,7 @@ public class My1Square extends MySquare {
         this.setElement(Element.Ones);
         this.setSquareHeight(2 * LENGTH);
         this.myPaint.setAlpha(ALPHA);
+        this.myPaintBorder.setColor(BLUE_BORDER);
     }
 
     @Override

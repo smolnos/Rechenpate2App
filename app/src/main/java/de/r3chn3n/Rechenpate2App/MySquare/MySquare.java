@@ -15,10 +15,8 @@ public abstract class MySquare implements Comparable<MySquare> {
     public static final float LENGTH = 30;
     public static final float LENGTH_BORDER = 30;
     public static final float STROKE_WIDTH = 6F;
-    public static final int BLUE_BORDER = Color.parseColor("#000ffa");
-    public static final int BLUE = Color.parseColor("#4287f5");
-    public static final int RED_BORDER = Color.parseColor("#ff0042");
-    public static final int RED = Color.parseColor("#ff9bb5");
+    public static final int BLUE = Color.parseColor("#000ffa");
+    public static final int RED = Color.parseColor("#ff0057");
 
     protected float x;
     protected float y;
@@ -47,7 +45,6 @@ public abstract class MySquare implements Comparable<MySquare> {
         this.myPaintBorder = new Paint();
         this.myPaintBorder.setStyle(Paint.Style.STROKE);
         this.myPaintBorder.setStrokeWidth(STROKE_WIDTH);
-        this.myPaintBorder.setColor(BLUE_BORDER);
         this.myPaintBorder.setAntiAlias(true);
         this.setCreateElement(true);
     }

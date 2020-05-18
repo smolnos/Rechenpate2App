@@ -1,10 +1,13 @@
 package de.r3chn3n.Rechenpate2App.MySquare;
 
+import android.graphics.Color;
 import android.view.MotionEvent;
 
 public class My100Square extends MySquare {
 
     public final int ALPHA = 30;
+    public static final int BLUE_BORDER = Color.parseColor("#000ffa");
+    public static final int RED_BORDER = Color.parseColor("#ff0057");
 
     My100Square(float x, float y) {
         super(x, y);
@@ -14,6 +17,7 @@ public class My100Square extends MySquare {
         this.setSquareHeight(2 * LENGTH * numOfSquaresY);
         this.setSquareWidth(2 * LENGTH * numOfSquaresX);
         this.myPaint.setAlpha(ALPHA);
+        this.myPaintBorder.setColor(BLUE_BORDER);
     }
 
     @Override
