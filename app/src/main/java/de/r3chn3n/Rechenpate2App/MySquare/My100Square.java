@@ -5,9 +5,9 @@ import android.view.MotionEvent;
 
 public class My100Square extends MySquare {
 
-    public final int ALPHA = 30;
-    public static final int BLUE_BORDER = Color.parseColor("#000ffa");
-    public static final int RED_BORDER = Color.parseColor("#ff0057");
+    private final int ALPHA = 30;
+    private static final int BLUE_BORDER = Color.parseColor("#000ffa");
+    private static final int RED_BORDER = Color.parseColor("#ff0057");
 
     My100Square(float x, float y) {
         super(x, y);
