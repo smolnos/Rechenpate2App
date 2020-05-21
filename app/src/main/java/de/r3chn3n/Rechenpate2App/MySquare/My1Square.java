@@ -5,7 +5,7 @@ import android.view.MotionEvent;
 
 public class My1Square extends MySquare {
 
-    private final int ALPHA = 150;
+    private final int ALPHA = 190;
     private static final int BLUE_BORDER = Color.parseColor("#000ffa");
     private static final int RED_BORDER = Color.parseColor("#ff0057");
 
