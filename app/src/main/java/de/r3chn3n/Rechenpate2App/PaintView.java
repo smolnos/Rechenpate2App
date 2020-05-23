@@ -129,7 +129,8 @@ public class PaintView extends View {
             mySquares.get(indexMySquares).setSelectedIndex(false);
         }
         super.draw(canvas);
-        for (MySquare mySquare : mySquares) {
+        for (int mysquarei = mySquares.size(); mysquarei-- > 0; ) {
+            MySquare mySquare = mySquares.get(mysquarei);
             switch (mySquare.getElement()) {
                 case Ones:
                     draw1Square(canvas, mySquare);
