@@ -1,7 +1,10 @@
 package de.r3chn3n.Rechenpate2App.MySquare;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 
 import lombok.Getter;
@@ -11,12 +14,17 @@ import lombok.Setter;
 @Setter
 public abstract class MySquare implements Comparable<MySquare> {
 
-    public final int OFFSET = 30;
-    public static final float LENGTH = 30;
-    public static final float LENGTH_BORDER = 30;
-    public static final float STROKE_WIDTH = 6F;
+    private MySquareStore mySquareStore = new MySquareStore();
+    public static final float scale = Math.min(Resources.getSystem().getDisplayMetrics().heightPixels, Resources.getSystem().getDisplayMetrics().widthPixels) / (Resources.getSystem().getDisplayMetrics().density * 15 );
+
+    public final int OFFSET = (int) (scale );
+    public static final float LENGTH = scale ;
+    public static final float LENGTH_BORDER = scale ;
+    public static final float STROKE_WIDTH = scale / 5; //6F ;
     public static final int BLUE = Color.parseColor("#000ffa");
     public static final int RED = Color.parseColor("#ff0057");
+    public static final int BLUE_BORDER = Color.parseColor("#2e3bff");
+    public static final int RED_BORDER = Color.parseColor("#ff024d");
 
     protected float x;
     protected float y;

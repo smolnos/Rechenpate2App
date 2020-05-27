@@ -1,13 +1,10 @@
 package de.r3chn3n.Rechenpate2App.MySquare;
 
-import android.graphics.Color;
 import android.view.MotionEvent;
 
 public class My1Square extends MySquare {
 
     private final int ALPHA = 150;
-    private static final int BLUE_BORDER = Color.parseColor("#2e3bff");
-    private static final int RED_BORDER = Color.parseColor("#ff3379");
 
 
     My1Square(float x, float y) {
