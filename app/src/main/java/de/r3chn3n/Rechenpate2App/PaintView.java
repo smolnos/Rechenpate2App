@@ -153,47 +153,47 @@ public class PaintView extends View {
     }
 
     private void draw1SquareOutOf100(Canvas canvas, MySquare mySquare, int i, int j) {
-        float newYPos =  mySquare.getY() - 2 * MySquare.LENGTH_BORDER * 5;
-        float newXPos =  mySquare.getX() - 2 * MySquare.LENGTH_BORDER * 5;
-        float left = newXPos - MySquare.LENGTH_BORDER + (2 * j) * MySquare.LENGTH_BORDER + (j - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
-        float top = newYPos - MySquare.LENGTH_BORDER + (2 * i) * MySquare.LENGTH_BORDER + (i - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
-        float right = newXPos + MySquare.LENGTH_BORDER + (2 * j) * MySquare.LENGTH_BORDER + (j - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
-        float bottom = newYPos + MySquare.LENGTH_BORDER + (2 * i) * MySquare.LENGTH_BORDER  + (i - 1) *  MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        float newYPos =  mySquare.getY() - 2 * mySquare.LENGTH_BORDER * 5;
+        float newXPos =  mySquare.getX() - 2 * mySquare.LENGTH_BORDER * 5;
+        float left = newXPos - mySquare.LENGTH_BORDER + (2 * j) * mySquare.LENGTH_BORDER + (j - 1) * mySquare.STROKE_WIDTH / 2 +  mySquare.STROKE_WIDTH;
+        float top = newYPos - mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER + (i - 1) * mySquare.STROKE_WIDTH / 2 +  mySquare.STROKE_WIDTH;
+        float right = newXPos + mySquare.LENGTH_BORDER + (2 * j) * mySquare.LENGTH_BORDER + (j - 1) * mySquare.STROKE_WIDTH / 2 +  mySquare.STROKE_WIDTH;
+        float bottom = newYPos + mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER  + (i - 1) *  mySquare.STROKE_WIDTH / 2 +  mySquare.STROKE_WIDTH;
         canvas.drawRect(left, top, right, bottom, mySquare.getMyPaint());
 
-        left = newXPos - MySquare.LENGTH + (2 * j) * MySquare.LENGTH + (j - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
-        top = newYPos - MySquare.LENGTH + (2 * i) * MySquare.LENGTH + (i - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
-        right = newXPos + MySquare.LENGTH + (2 * j) * MySquare.LENGTH + (j - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
-        bottom = newYPos + MySquare.LENGTH + (2 * i) * MySquare.LENGTH  + (i - 1) *  MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        left = newXPos - mySquare.LENGTH + (2 * j) * mySquare.LENGTH + (j - 1) * mySquare.STROKE_WIDTH / 2 +  mySquare.STROKE_WIDTH;
+        top = newYPos - mySquare.LENGTH + (2 * i) * mySquare.LENGTH + (i - 1) * mySquare.STROKE_WIDTH / 2 +  mySquare.STROKE_WIDTH;
+        right = newXPos + mySquare.LENGTH + (2 * j) * mySquare.LENGTH + (j - 1) * mySquare.STROKE_WIDTH / 2 +  mySquare.STROKE_WIDTH;
+        bottom = newYPos + mySquare.LENGTH + (2 * i) * mySquare.LENGTH  + (i - 1) *  mySquare.STROKE_WIDTH / 2 +  mySquare.STROKE_WIDTH;
         canvas.drawRect(left, top, right, bottom, mySquare.getMyPaintBorder());
     }
 
     private void draw1SquareOutOf10(Canvas canvas, MySquare mySquare, int i) {
-        float newYPos =  mySquare.getY() - 2 * MySquare.LENGTH_BORDER * 5;
-        float left = mySquare.getX() - MySquare.LENGTH_BORDER;
-        float top = newYPos - MySquare.LENGTH_BORDER + (2 * i) * MySquare.LENGTH_BORDER + (i - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
-        float right = mySquare.getX() + MySquare.LENGTH_BORDER;
-        float bottom = newYPos + MySquare.LENGTH_BORDER + (2 * i) * MySquare.LENGTH_BORDER  + (i - 1) *  MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        float newYPos =  mySquare.getY() - 2 * mySquare.LENGTH_BORDER * 5;
+        float left = mySquare.getX() - mySquare.LENGTH_BORDER;
+        float top = newYPos - mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER + (i - 1) * mySquare.STROKE_WIDTH / 2 +  mySquare.STROKE_WIDTH;
+        float right = mySquare.getX() + mySquare.LENGTH_BORDER;
+        float bottom = newYPos + mySquare.LENGTH_BORDER + (2 * i) * mySquare.LENGTH_BORDER  + (i - 1) *  mySquare.STROKE_WIDTH / 2 +  mySquare.STROKE_WIDTH;
         canvas.drawRect(left, top, right, bottom, mySquare.getMyPaint());
 
-        left = mySquare.getX() - MySquare.LENGTH;
-        top = newYPos - MySquare.LENGTH + (2 * i) * MySquare.LENGTH + (i - 1) * MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
-        right = mySquare.getX() + MySquare.LENGTH;
-        bottom = newYPos + MySquare.LENGTH + (2 * i) * MySquare.LENGTH  + (i - 1) *  MySquare.STROKE_WIDTH / 2 +  MySquare.STROKE_WIDTH;
+        left = mySquare.getX() - mySquare.LENGTH;
+        top = newYPos - mySquare.LENGTH + (2 * i) * mySquare.LENGTH + (i - 1) * mySquare.STROKE_WIDTH / 2 +  mySquare.STROKE_WIDTH;
+        right = mySquare.getX() + mySquare.LENGTH;
+        bottom = newYPos + mySquare.LENGTH + (2 * i) * mySquare.LENGTH  + (i - 1) *  mySquare.STROKE_WIDTH / 2 +  mySquare.STROKE_WIDTH;
         canvas.drawRect(left, top, right, bottom, mySquare.getMyPaintBorder());
     }
 
     private void draw1Square(Canvas canvas, MySquare mySquare) {
-        float left = mySquare.getX() - MySquare.LENGTH_BORDER;
-        float top = mySquare.getY() - MySquare.LENGTH_BORDER;
-        float right = mySquare.getX() + MySquare.LENGTH_BORDER;
-        float bottom = mySquare.getY() + MySquare.LENGTH_BORDER;
+        float left = mySquare.getX() - mySquare.LENGTH_BORDER;
+        float top = mySquare.getY() - mySquare.LENGTH_BORDER;
+        float right = mySquare.getX() + mySquare.LENGTH_BORDER;
+        float bottom = mySquare.getY() + mySquare.LENGTH_BORDER;
         canvas.drawRect(left, top, right, bottom, mySquare.getMyPaint());
 
-        left = mySquare.getX() - MySquare.LENGTH;
-        top = mySquare.getY() - MySquare.LENGTH;
-        right = mySquare.getX() + MySquare.LENGTH;
-        bottom = mySquare.getY() + MySquare.LENGTH;
+        left = mySquare.getX() - mySquare.LENGTH;
+        top = mySquare.getY() - mySquare.LENGTH;
+        right = mySquare.getX() + mySquare.LENGTH;
+        bottom = mySquare.getY() + mySquare.LENGTH;
         canvas.drawRect(left, top, right, bottom, mySquare.getMyPaintBorder());
     }
 

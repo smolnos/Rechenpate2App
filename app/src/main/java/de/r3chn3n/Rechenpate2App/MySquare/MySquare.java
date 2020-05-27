@@ -3,8 +3,6 @@ package de.r3chn3n.Rechenpate2App.MySquare;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.MotionEvent;
 
 import lombok.Getter;
@@ -15,16 +13,21 @@ import lombok.Setter;
 public abstract class MySquare implements Comparable<MySquare> {
 
     private MySquareStore mySquareStore = new MySquareStore();
-    public static final float scale = Math.min(Resources.getSystem().getDisplayMetrics().heightPixels, Resources.getSystem().getDisplayMetrics().widthPixels) / (Resources.getSystem().getDisplayMetrics().density * 15 );
-
-    public final int OFFSET = (int) (scale );
-    public static final float LENGTH = scale ;
-    public static final float LENGTH_BORDER = scale ;
-    public static final float STROKE_WIDTH = scale / 5; //6F ;
-    public static final int BLUE = Color.parseColor("#000ffa");
-    public static final int RED = Color.parseColor("#ff0057");
-    public static final int BLUE_BORDER = Color.parseColor("#2e3bff");
-    public static final int RED_BORDER = Color.parseColor("#ff024d");
+    public int devicePixelsWidthY =  Resources.getSystem().getDisplayMetrics().heightPixels;
+    public int devicePixelsWidthX =  Resources.getSystem().getDisplayMetrics().widthPixels;
+    float deviceActualDpiX = Resources.getSystem().getDisplayMetrics().xdpi ;
+    float deviceActualDpiY= Resources.getSystem().getDisplayMetrics().ydpi ;
+    float deviceActualInchWidthX = devicePixelsWidthX / deviceActualDpiX ;
+    float deviceActualInchWidthY = devicePixelsWidthY / deviceActualDpiY ;
+    public float scale = 0 ;
+    public int BLUE = Color.parseColor("#000ffa");
+    public int RED = Color.parseColor("#ff0057");
+    public int BLUE_BORDER = Color.parseColor("#2e3bff");
+    public int RED_BORDER = Color.parseColor("#ff024d");
+    public int OFFSET ;
+    public float LENGTH  ;
+    public float LENGTH_BORDER ;
+    public float STROKE_WIDTH ; //6F ;
 
     protected float x;
     protected float y;
@@ -40,10 +43,31 @@ public abstract class MySquare implements Comparable<MySquare> {
     protected float numOfSquaresY;
     protected boolean selectedIndex = false;
     protected boolean createElement = false;
+    int n;
 
     MySquare(float x, float y) {
         this.x = x;
         this.y = y;
+        if (deviceActualInchWidthX < deviceActualInchWidthY) {
+            if (deviceActualInchWidthY < 5) {
+                n = 12;
+            } else {
+                n = 18;
+            }
+            scale = (float) devicePixelsWidthX / (n  * Resources.getSystem().getDisplayMetrics().density)  ;
+        } else {
+            if (deviceActualInchWidthX < 5) {
+                n = 12;
+            } else {
+                n = 18;
+            }
+            scale = (float) devicePixelsWidthY / (n  * Resources.getSystem().getDisplayMetrics().density)  ;
+
+        }
+        OFFSET = (int) (scale );
+        LENGTH = scale ;
+        LENGTH_BORDER = scale ;
+        STROKE_WIDTH = scale / 5; //6F ;
         this.xFirstTouch = x;
         this.yFirstTouch = y;
         this.myPaint = new Paint();
