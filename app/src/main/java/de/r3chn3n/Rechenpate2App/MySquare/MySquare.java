@@ -13,12 +13,6 @@ import lombok.Setter;
 public abstract class MySquare implements Comparable<MySquare> {
 
     private MySquareStore mySquareStore = new MySquareStore();
-    public int devicePixelsWidthY =  Resources.getSystem().getDisplayMetrics().heightPixels;
-    public int devicePixelsWidthX =  Resources.getSystem().getDisplayMetrics().widthPixels;
-    float deviceActualDpiX = Resources.getSystem().getDisplayMetrics().xdpi ;
-    float deviceActualDpiY= Resources.getSystem().getDisplayMetrics().ydpi ;
-    float deviceActualInchWidthX = devicePixelsWidthX / deviceActualDpiX ;
-    float deviceActualInchWidthY = devicePixelsWidthY / deviceActualDpiY ;
     public float scale = 0 ;
     public int BLUE = Color.parseColor("#000ffa");
     public int RED = Color.parseColor("#ff0057");
@@ -43,26 +37,20 @@ public abstract class MySquare implements Comparable<MySquare> {
     protected float numOfSquaresY;
     protected boolean selectedIndex = false;
     protected boolean createElement = false;
-    int n;
+
+    float devicePixelsWidth = Resources.getSystem().getDisplayMetrics().xdpi;
+    float devicePixelsHeight = Resources.getSystem().getDisplayMetrics().ydpi;
+
 
     MySquare(float x, float y) {
         this.x = x;
         this.y = y;
-        if (deviceActualInchWidthX < deviceActualInchWidthY) {
-            if (deviceActualInchWidthY < 5) {
-                n = 12;
+        if (devicePixelsWidth < devicePixelsHeight) {
+            if (devicePixelsWidth < devicePixelsHeight) {
+                scale = devicePixelsWidth / 12;
             } else {
-                n = 18;
+                scale = devicePixelsHeight / 12;
             }
-            scale = (float) devicePixelsWidthX / (n  * Resources.getSystem().getDisplayMetrics().density)  ;
-        } else {
-            if (deviceActualInchWidthX < 5) {
-                n = 12;
-            } else {
-                n = 18;
-            }
-            scale = (float) devicePixelsWidthY / (n  * Resources.getSystem().getDisplayMetrics().density)  ;
-
         }
         OFFSET = (int) (scale );
         LENGTH = scale ;
