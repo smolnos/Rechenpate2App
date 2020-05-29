@@ -38,19 +38,17 @@ public abstract class MySquare implements Comparable<MySquare> {
     protected boolean selectedIndex = false;
     protected boolean createElement = false;
 
-    float devicePixelsWidth = Resources.getSystem().getDisplayMetrics().xdpi;
-    float devicePixelsHeight = Resources.getSystem().getDisplayMetrics().ydpi;
+    float devicePixelsWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+    float devicePixelsHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
 
     MySquare(float x, float y) {
         this.x = x;
         this.y = y;
         if (devicePixelsWidth < devicePixelsHeight) {
-            if (devicePixelsWidth < devicePixelsHeight) {
-                scale = devicePixelsWidth / 12;
-            } else {
-                scale = devicePixelsHeight / 12;
-            }
+            scale = devicePixelsWidth / 28;
+        } else {
+            scale = devicePixelsHeight / 28;
         }
         OFFSET = (int) (scale );
         LENGTH = scale ;
@@ -67,6 +65,7 @@ public abstract class MySquare implements Comparable<MySquare> {
         this.myPaintBorder.setStrokeWidth(STROKE_WIDTH);
         this.myPaintBorder.setAntiAlias(true);
         this.setCreateElement(true);
+
     }
 
     public abstract void setColor();
