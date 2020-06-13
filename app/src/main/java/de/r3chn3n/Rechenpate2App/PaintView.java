@@ -214,4 +214,9 @@ public class PaintView extends View {
             mySquare.setSquareWidth(tmp);
         }
     }
+
+    public void deleteCircles() {
+        indexMySquares = 0;
+        mySquares.clear();
+    }
 }

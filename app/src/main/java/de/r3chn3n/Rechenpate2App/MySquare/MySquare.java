@@ -46,9 +46,9 @@ public abstract class MySquare implements Comparable<MySquare> {
         this.x = x;
         this.y = y;
         if (devicePixelsWidth < devicePixelsHeight) {
-            scale = devicePixelsWidth / 28;
+            scale = devicePixelsWidth / 25;
         } else {
-            scale = devicePixelsHeight / 28;
+            scale = devicePixelsHeight / 25;
         }
         OFFSET = (int) (scale );
         LENGTH = scale ;
