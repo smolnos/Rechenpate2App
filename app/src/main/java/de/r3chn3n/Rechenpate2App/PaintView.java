@@ -215,7 +215,7 @@ public class PaintView extends View {
         }
     }
 
-    public void deleteCircles() {
+    public void deleteSquares() {
         indexMySquares = 0;
         mySquares.clear();
     }

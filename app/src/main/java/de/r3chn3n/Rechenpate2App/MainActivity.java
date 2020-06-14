@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //ToDo
-                paintView.deleteCircles();
+                paintView.deleteSquares();
                 closeFABMenu();
             }
         });
